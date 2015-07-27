@@ -32,11 +32,56 @@ $(function() {
          * and that the URL is not empty.
          */
 
+        function defineLoop (data) {
+            it(data + ' is defined and not empty', function() {
+                expect(data).toBeDefined();
+                expect(data.length).not.toBe(0);
+            });
+        };
+        
+        allFeeds.forEach(function(el, i) {
+            defineLoop(el.url);
+        });
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+
+        allFeeds.forEach(function(el, i) {
+            defineLoop(el.name);
+        });
+        
+        /*
+         * Tests for valid URL
+         */
+        // http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
+        
+        function validUrl(str) {
+          var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+          if(!pattern.test(str)) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+        
+        
+        function urlValidTest(url) {
+            it(url + ' is a valid URL', function() {
+                expect(validUrl(url)).toEqual(true);
+            });
+        }
+        
+        allFeeds.forEach(function(el, i) {
+            urlValidTest(el.url);
+        });
+        
     });
 
 

@@ -7,6 +7,7 @@
  */
 
 // The names and URLs to all of the feeds we'd like available.
+
 var allFeeds = [
     {
         name: 'Udacity Blog',
@@ -129,3 +130,4 @@ $(function() {
         $('body').toggleClass('menu-hidden');
     });
 }());
+
