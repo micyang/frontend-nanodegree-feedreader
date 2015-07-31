@@ -27,9 +27,8 @@ $(function() {
         });
 
 
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a URL defined
-         * and that the URL is not empty.
+        /* A test that loops through each feed in the allFeeds object and 
+         * ensures it has a URL defined and that the URL is not empty.
          */
 
         function defineLoop (data) {
@@ -43,19 +42,18 @@ $(function() {
             defineLoop(el.url);
         });
 
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a name defined
-         * and that the name is not empty.
+        /* A test that loops through each feed in the allFeeds object and ensures it
+         * has a name defined and that the name is not empty.
          */
 
         allFeeds.forEach(function(el, i) {
             defineLoop(el.name);
         });
         
-        /*
-         * Tests for valid URL
+        /* A test that loops through each feed in the allFeeds object and
+         * ensures that it has a valid URL.
+         * http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
          */
-        // http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
         
         function validUrl(str) {
           var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -71,7 +69,6 @@ $(function() {
           }
         }
         
-        
         function urlValidTest(url) {
             it(url + ' is a valid URL', function() {
                 expect(validUrl(url)).toEqual(true);
@@ -85,25 +82,24 @@ $(function() {
     });
 
 
-    /* TODO: Write a new test suite named "The menu" */
+    /* A test suite that tests the menu to be hidden by default
+    * and it is able to toggle its visiblity by clicking on the
+    * menu icon.
+    */
     
-    describe('The menu' , function() { 
+    describe('The Menu' , function() { 
 
-        /* TODO: Write a test that ensures the menu element is
-         * hidden by default. You'll have to analyze the HTML and
-         * the CSS to determine how we're performing the
-         * hiding/showing of the menu element.
-         */
+        /* A test that ensures the menu element is hidden by default. */
 
         it('is hidden by default', function() {
             expect($( 'body' ).hasClass( 'menu-hidden' )).toEqual(true);
         });
          
 
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
+         /* A test that ensures the menu changes visibility when the menu
+          * icon is clicked. This test should have two expectations:
+          * does the menu display when clicked and does it hide when clicked
+          * again.
           */
           
           it('is able to toggle visibility by clicking menu icon', function() {
@@ -116,27 +112,78 @@ $(function() {
         });
     });
     
-    /* TODO: Write a new test suite named "Initial Entries" */
+    /* A test suite for testing initial entries being loaded */
     
     describe('Initial Entries' , function() {
         
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test wil require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
+        /* It is a test that ensures when the loadFeed function is called
+         * and completes its work, there is at least a single .entry
+         * element within the .feed container.
          */
+         
+         var feedContainer = $('.feed');
+         
+         beforeEach(function(done) {
+             loadFeed(0, function() {
+                 done();
+             });
+         });
+         
+         it('after loadFeed function is called and completes its work, there is at least a single entry element within the feed container', function(done) {
+             expect(feedContainer.children().length ? true : false).toEqual(true);
+             done();
+         });
     
     });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+    /* A test suite for testing that it actually gets new content */
     
     describe('New Feed Selection' , function() {
 
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
+        /* A test that ensures when a new feed is loaded by the loadFeed
+         * function that the content actually changes.
          */
          
+        var entryLink;
+        var entryIndex = 0;
+        var entryArray = [];
+        var firstTimeLoaded = false;
+        
+        beforeEach(function(done) {
+            //entryLink = $('.entry-link').attr("href");
+            //console.log('beforeeach:' + entryIndex );
+            loadFeed(entryIndex, function() {
+                entryLink = $('.entry-link').attr("href");
+                done();
+            });
+        });
+        
+        afterEach(function(done) {
+            entryIndex++;
+            done();
+        });
+        
+        function newFeeds() {
+            it('index ' + i + ' is different', function(done) {
+                console.log(entryIndex);
+                 if (firstTimeLoaded === false) {
+                     firstTimeLoaded = true;
+                     expect(true).toEqual(true);
+                     entryArray[entryIndex] = entryLink;
+                     console.log(entryArray[entryIndex]);
+                 } else {
+                     entryArray[entryIndex] = entryLink;
+                     console.log(entryArray[entryIndex]);
+                     console.log(entryArray[entryIndex-1]);
+                     expect(entryArray[i] !== entryArray[entryIndex - 1]).toEqual(true);
+                 }
+                 done();
+            });
+        }
+
+        for(var i = 0; i < allFeeds.length; i++) {
+            console.log('forloop' + i);
+            newFeeds();
+        }
     });
 }());
