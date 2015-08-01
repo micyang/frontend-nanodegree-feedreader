@@ -144,7 +144,7 @@ $(function() {
 			});
 		});
 
-		/* After each time the test function are called, the index increases by one
+		/* After each time the test functions are called, the index increases by one
 		 */
 		afterEach(function(done) {
 			index++;
